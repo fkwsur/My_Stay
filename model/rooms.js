@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const rooms = sequelize.define(
     "rooms",
     {
-      idx: {
+      r_idx: {
         type:DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       room_price: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      room_count: {
         type: DataTypes.INTEGER,
         allowNull: false,
       }

@@ -38,18 +38,19 @@ module.exports = {
         where : { user_id :user_id }
       });
       console.log(rows.password);
-      if(!rows) throw '아이디 없음'
+      if(!rows) throw res.status(200).json({result: '아이디 없음'});
       const checking = hash.compareHash(password, rows.password);
       if(checking) {
         let token = jwt.createToken(user_id);
         return res.status(200).json({token: token});
       }else{
-        throw '비밀번호 일치없음'
+        throw res.status(200).json({result: '비밀번호 일치없음'});
       }
     }catch(error){
       console.log(error);
       return res.status(200).send('에러가 났습니다.');
     }
   }
+
 
 }

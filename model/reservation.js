@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Reservation = sequelize.define(
-    "Reservation",
+  const reservation = sequelize.define(
+    "reservation",
     {
       idx: {
         type:DataTypes.INTEGER,
@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement : true
       },
-      s_idx: {
+      r_idx: {
         type:DataTypes.INTEGER,
         allowNull: false,
       },
@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       reserved: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       reserved_day: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       }
     },
@@ -32,5 +32,5 @@ module.exports = (sequelize, DataTypes) => {
       comment: '예약여부확인',
     }
     );
-  return Reservation;
+  return reservation;
 };
