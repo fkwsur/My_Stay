@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Reservation = sequelize.define(
-    "Reservation",
+  const chatting = sequelize.define(
+    "chatting",
     {
       idx: {
         type:DataTypes.INTEGER,
@@ -8,29 +8,27 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement : true
       },
-      s_idx: {
-        type:DataTypes.INTEGER,
-        allowNull: false,
-      },
       user_id: {
         type:DataTypes.STRING,
         unique: true,
         allowNull: false,
       },
-      reserved: {
-        type: DataTypes.INTEGER,
+      chattingRoom: {
+        type:DataTypes.STRING,
+        unique: true,
         allowNull: false,
       },
-      reserved_day: {
-        type: DataTypes.INTEGER,
+      chatting: {
+        type:DataTypes.STRING,
+        unique: true,
         allowNull: false,
-      }
+      },
     },
     {
       freezeTableName: true,
       timestamps: true,
-      comment: '예약여부확인',
+      comment: '채팅로그',
     }
     );
-  return Reservation;
+  return chatting;
 };

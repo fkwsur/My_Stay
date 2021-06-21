@@ -17,9 +17,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      user_password: {
+      password: {
         type:DataTypes.STRING,
-        unique: false,
         allowNull: false,
       },
       email: {
@@ -34,9 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       owner: {
         type:DataTypes.STRING,
-        unique: false,
-        allowNull: false,
-        defaultValue: sequelize.literal('false')
+        allowNull: false
       }
     },
     {

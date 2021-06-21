@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const dotenv = require('dotenv');
 const Router = require('./routes');
 const db = require('./model')   // mysql 시퀄라이저 모델
 const http = require('http');
 http.createServer(app).listen(8080, () => {
   console.log('server on');
 });
-
+dotenv.config();
 db.sequelize
 .authenticate()
 .then(async () => {
@@ -25,3 +26,5 @@ db.sequelize
 app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: false}))
+app.use('/api/user', Router.userRouter)
+app.use('/api/stayinfo', Router.stayInfoRouter)
