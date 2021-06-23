@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       reserved_day: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      RemainingRooms: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       }
     },
     {
