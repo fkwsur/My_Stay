@@ -27,6 +27,14 @@ module.exports = (sequelize, DataTypes) => {
       RemainingRooms: {
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      checkin: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      checkout: {
+        type: DataTypes.STRING,
+        allowNull: true,
       }
     },
     {

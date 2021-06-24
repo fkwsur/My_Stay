@@ -1,4 +1,4 @@
-const { rooms, reservation, QueryTypes, sequelize } = require("../model");
+const { rooms, reservation, QueryTypes, sequelize, stayinfo } = require("../model");
 const { jwt } = require('../utils');
 
 module.exports = {
@@ -11,7 +11,6 @@ module.exports = {
       let decoded = jwt.verifyToken(token);
       const rows = await rooms.findOne({where : {r_idx : r_idx}});
       const count = rows.room_count -1;
-      console.log(count);
       if(!rows) throw res.status(200).json({result: '방을 찾을 수 없습니다.'});
       if(rows.room_count === 0) throw res.status(200).json({result: '예약이 꽉 찼습니다.'});
       const rows2 = await reservation.create({
@@ -32,8 +31,66 @@ module.exports = {
 
     }catch(error){
       console.log(error);
+
+    }
+  },
+
+  CheckIn : async (req, res) => {
+    try{
+      let {token, idx, CheckInTime} = req.body;
+      console.log(req.body);
+      let decoded = jwt.verifyToken(token);
+      const rows = await stayinfo.findOne({where : {manager_id : decoded.user_id}});
+      if(!rows) throw res.status(200).json({result: '계정이 일치하지 않습니다.'});
+      const rows2 = await reservation.update(
+        {checkin : CheckInTime},
+        {where : {idx : idx}});
+      if(rows2) return res.status(200).json({result : '체크인 완료.'})
+    }catch(error){
+      return res.status(200).send('에러가 났습니다.');
+    }
+  },
+
+  CheckOut : async (req, res) => {
+    try{
+      let {token, r_idx, idx, CheckOutTime} = req.body;
+      let decoded = jwt.verifyToken(token);
+      const rows = await stayinfo.findOne({where : {manager_id : decoded.user_id}});
+      if(!rows) throw res.status(200).json({result: '계정이 일치하지 않습니다.'});
+      const rows2 = await reservation.findOne({where : {idx : idx}});
+      if(rows2.checkin === null || rows2.checkout !== null) throw res.status(200).json({result: '체크인을 하지 않았거나 이미 체크아웃한 방입니다.'});
+      const rows3 = await reservation.update(
+        {checkout : CheckOutTime},
+        {where : {idx : idx}});
+        if(!rows3) throw res.status(200).json({result: '체크아웃을 할 수 없습니다.'});
+      const rows4 = await rooms.findOne({where : {r_idx : r_idx}});
+      if(!rows4) throw res.status(200).json({result: '방을 찾을 수 없습니다.'});
+      const count = rows4.room_count + 1;
+      const rows5 = await rooms.update(
+        {room_count : count},
+        {
+          where : {r_idx : r_idx}
+        }
+        );
+      if(rows5) return res.status(200).json({result : '체크아웃 완료.'})
+      console.log(rows2);
+    }catch(error){
+      return res.status(200).send('에러가 났습니다.');
+    }
+  },
+
+  ReservationList: async (req, res) => {
+    try{
+      let {token, stay_code, r_idx} = req.body;
+      let decoded = jwt.verifyToken(token);
+      console.log(decoded);
+      const rows = await stayinfo.findOne({where : {manager_id : decoded.user_id, s_idx : stay_code}});
+      const rows2 = await rooms.findOne({where : {stay_code : rows.s_idx, r_idx:r_idx}});
+      const rows3 = await reservation.findAll({where : {r_idx : rows2.r_idx}});
+      if(rows3) return res.status(200).json({result : rows3})
+    } catch(error){
+      console.log(error);
       return res.status(200).send('에러가 났습니다.');
     }
   }
-
 }

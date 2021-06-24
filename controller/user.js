@@ -30,6 +30,18 @@ module.exports = {
     }
   },
 
+  CheckId: async (req, res) => {
+    try{
+      let {id} =req.body
+      const rows = await user.findOne({
+        where : { user_id :id }
+      });
+      if(rows === null) return res.status(200).json({result : '사용가능한 아이디입니다.'});
+    }catch(error){
+      return res.status(200).send('에러가 났습니다.');
+    }
+  },
+
   SignIn: async (req, res) => {
     try{
       let {user_id, password} = req.body

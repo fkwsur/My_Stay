@@ -19,8 +19,15 @@ export const Auth = () => {
     if (name === "owner") setPhoneNumber(value);
   }
 
-  const onSubmit = () => {
+  const onSubmit = async (e) => {
     console.log('전송');
+    await axios
+      .post("", {
+      })
+      .then((res) => {
+      })
+      .catch((err) => {
+      });
   }
 
   return (
