@@ -81,13 +81,23 @@ module.exports = {
 
   ReservationList: async (req, res) => {
     try{
-      let {token, stay_code, r_idx} = req.body;
+      let {token, r_idx} = req.body;
       let decoded = jwt.verifyToken(token);
       console.log(decoded);
-      const rows = await stayinfo.findOne({where : {manager_id : decoded.user_id, s_idx : stay_code}});
-      const rows2 = await rooms.findOne({where : {stay_code : rows.s_idx, r_idx:r_idx}});
-      const rows3 = await reservation.findAll({where : {r_idx : rows2.r_idx}});
-      if(rows3) return res.status(200).json({result : rows3})
+      let data = [r_idx];
+
+      var query = `select * from stayinfo left join rooms 
+      on stayinfo.s_idx = rooms.stay_code 
+      left JOIN reservation
+      on rooms.r_idx = reservation.r_idx 
+      where manager_id = :manager_id and reservation.r_idx = :r_idx`;
+      var values = {
+        manager_id : decoded.user_id,
+        r_idx: data,
+      }
+      const rows = await sequelize.query(query, { replacements: values })
+      console.log(rows);
+      if(rows) return res.status(200).json({result : rows[0]})
     } catch(error){
       console.log(error);
       return res.status(200).send('에러가 났습니다.');
