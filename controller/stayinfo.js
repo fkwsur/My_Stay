@@ -9,10 +9,13 @@ module.exports = {
         token,
         stay_name,
         stay_number,
-        stay_image,
         address,
         content
       } = req.body
+      console.log(req.body)
+      console.log(req.file)
+      let image = '/img/' + req.file.filename;
+
       console.log(token);
       let decoded = jwt.verifyToken(token);
       console.log(decoded);
@@ -25,12 +28,12 @@ module.exports = {
         stay_manager: rows.username,
         stay_name: stay_name,
         stay_number: stay_number,
-        stay_image: stay_image,
+        stay_image: image,
         address: address,
         content: content
       })
+      if(rows2) return res.status(200).json({result : true})
       if(!rows2) return res.status(200).json({result : '주소가 이미 있는주소입니다.'})
-      if(rows2) return res.status(200).json({result : '숙박 생성 성공!'})
       } 
     }catch(error){
       console.log(error);
@@ -46,6 +49,7 @@ module.exports = {
       let decoded = jwt.verifyToken(token);
       const rows = await stayinfo.findAll({where : {manager_id : decoded.user_id}});
       if(rows) return res.status(200).json({result : rows})
+      else throw console.log('error')
     }catch(error){
       console.log(error);
     }

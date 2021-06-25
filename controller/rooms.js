@@ -10,11 +10,12 @@ module.exports = {
         token,
         content,
         room_name,
-        room_image,
         room_price,
         room_count
       } = req.body
       console.log(req.body)
+      console.log(req.file)
+      let image = '/img/' + req.file.filename;
       let decoded = jwt.verifyToken(token);
       console.log(decoded);
       const rows = await stayinfo.findOne(
@@ -29,7 +30,7 @@ module.exports = {
         stay_code : rows.s_idx,
         content : content,
         room_name : room_name,
-        room_image : room_image,
+        room_image : image,
         room_price : room_price,
         room_count : room_count
       })
@@ -106,6 +107,7 @@ module.exports = {
         }
        )
         if(rows2) return res.status(200).json({result : rows2});
+        else throw '에러가 났습니다.';
       }
     }catch(error){
       console.log(error);

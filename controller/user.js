@@ -25,6 +25,7 @@ module.exports = {
         owner : owner 
       });
       if(rows) return res.status(200).json({result : true});
+      if(!rows) return res.status(200).json({result : '데이터가 올바르지 않습니다.'});
     }catch(error){
       return res.status(200).send('에러가 났습니다.');
     }

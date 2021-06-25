@@ -85,10 +85,9 @@ module.exports = {
       let decoded = jwt.verifyToken(token);
       console.log(decoded);
       let data = [r_idx];
-
       var query = `select * from stayinfo left join rooms 
       on stayinfo.s_idx = rooms.stay_code 
-      left JOIN reservation
+      left join reservation
       on rooms.r_idx = reservation.r_idx 
       where manager_id = :manager_id and reservation.r_idx = :r_idx`;
       var values = {
@@ -96,8 +95,7 @@ module.exports = {
         r_idx: data,
       }
       const rows = await sequelize.query(query, { replacements: values })
-      console.log(rows);
-      if(rows) return res.status(200).json({result : rows[0]})
+      if(rows) return res.status(200).json({result : rows[0]});
     } catch(error){
       console.log(error);
       return res.status(200).send('에러가 났습니다.');
