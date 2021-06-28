@@ -3,12 +3,38 @@ import axios from "axios";
 import { Link } from 'react-router-dom';
 
 export const Header = () => {
+
+  const remove = () => {
+    window.sessionStorage.removeItem('id');
+    window.sessionStorage.removeItem('x_auth');
+    window.sessionStorage.removeItem('owner');
+    window.sessionStorage.removeItem('username');
+    window.location.reload();
+  }
+
   return (
     <>
-      <Link to="/">메인화면</Link>
-      <Link to="/auth">로그인페이지</Link>
-      <Link to="/admin">관리자페이지</Link>
-      <p>{window.sessionStorage.getItem('id')}님 환영합니다.</p>
+      <li>
+        <Link to="/main">메인화면</Link>
+      </li>
+      <li>
+        {window.sessionStorage.getItem('id') ?
+          <button type="button" onClick={remove}>Logout</button>
+          :
+          <Link to="/auth">로그인페이지</Link>
+        }
+      </li>
+      <li>
+        <Link to="/admin">관리자페이지</Link>
+      </li>
+      <li>
+        <Link to="/MyPage">마이페이지</Link>
+      </li>
+      {window.sessionStorage.getItem('id') ?
+        <p>{window.sessionStorage.getItem('id')}님 환영합니다.</p>
+        :
+        ''
+      }
     </>
   )
 }
@@ -22,7 +48,7 @@ export const Main = () => {
 
   const List = async (e) => {
     const url = window.location.pathname;
-    const s_idx = url.split('/')[2];
+    const s_idx = url.split('/')[3];
     console.log(s_idx);
     await axios
       .get("/api/stayinfo/AllStayList")
@@ -53,7 +79,7 @@ export const Main = () => {
             <img src={k.stay_image} alt="대표이미지" />
             <p>위치: {k.address}</p>
             <p>설명: {k.content}</p>
-            <button type="button"><Link to={`/${k.s_idx}`}>자세히보기</Link></button>
+            <button type="button"><Link to={`/main/${k.s_idx}`}>자세히보기</Link></button>
             <hr />
           </>
         )
@@ -72,7 +98,7 @@ export const DetailRoom = () => {
 
   const List = async () => {
     const url = window.location.pathname;
-    const s_idx = url.split('/')[1];
+    const s_idx = url.split('/')[2];
     console.log(s_idx);
     await axios
       .post("/api/rooms/AllRoomList", {
@@ -80,12 +106,13 @@ export const DetailRoom = () => {
       })
       .then((res) => {
         console.log(res);
-        if (res.data.result) {
+        if (res.data.result.length === 0) {
+          alert("방이 없습니다.");
+          window.location.href = "/main";
+        }
+        else if (res.data.result) {
           console.log(res.data.result);
           setRoomList(res.data.result);
-        }
-        else {
-          alert("에러발생");
         }
       })
       .catch((err) => {
@@ -93,9 +120,14 @@ export const DetailRoom = () => {
       });
   }
 
+  const onClick = () => {
+    alert('로그인 후 이용가능합니다.')
+    window.location.href = "/auth";
+  }
+
   return (
     <>
-      {roomList.map(k => {
+      {roomList ? roomList.map(k => {
         return (
           <>
             <p>{k.r_idx}</p>
@@ -104,11 +136,18 @@ export const DetailRoom = () => {
             <img src={k.room_image} alt="대표이미지" />
             <p>가격 {k.room_price}</p>
             <p>잔여방 개수 {k.room_count}</p>
-            <button type="button"><Link to={`/reserve/${k.r_idx}`}>예약하기</Link></button>
+
+            {window.sessionStorage.getItem('id') ?
+              <button type="button" >
+                <Link to={`/main/reserve/${k.r_idx}`}>예약하기</Link>
+              </button>
+              :
+              <button onClick={onClick}>예약하기</button>
+            }
             <hr />
           </>
         )
-      })}
+      }) : "방이 없습니다."}
 
     </>
   )

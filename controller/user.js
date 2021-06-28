@@ -55,7 +55,7 @@ module.exports = {
       const checking = hash.compareHash(password, rows.password);
       if(checking) {
         let token = jwt.createToken(user_id);
-        return res.status(200).json({token: token});
+        return res.status(200).json({token: token, rows:rows});
       }else{
         throw res.status(200).json({result: '비밀번호 일치없음'});
       }

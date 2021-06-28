@@ -5,7 +5,7 @@ module.exports = {
 
   reserveRoom: async (req,res) => {
     try{
-      let { token, r_idx, reserved, reserved_day } = req.body;
+      let { token, r_idx, reserved_day } = req.body;
       console.log(req.body)
       
       let decoded = jwt.verifyToken(token);
@@ -17,7 +17,7 @@ module.exports = {
         r_idx : rows.r_idx,
         RemainingRooms : rows.room_count,
         user_id : decoded.user_id,
-        reserved : reserved,
+        reserved : 'yes',
         reserved_day : reserved_day
       })
       if(!rows2) throw res.status(200).json({result: '예약 불가능'});
@@ -100,5 +100,26 @@ module.exports = {
       console.log(error);
       return res.status(200).send('에러가 났습니다.');
     }
-  }
+  },
+
+  UserReservationList: async (req, res) => {
+    try{
+      let {token} = req.body;
+      let decoded = jwt.verifyToken(token);
+      console.log(decoded);
+      let query = `select * from stayinfo left join rooms 
+      on stayinfo.s_idx = rooms.stay_code 
+      left join reservation
+      on rooms.r_idx = reservation.r_idx 
+      where user_id = :user_id`;
+      let values = {
+        user_id : decoded.user_id,
+      }
+      const rows = await sequelize.query(query, { replacements: values })
+      if(rows) return res.status(200).json({result : rows[0]});
+    } catch(error){
+      console.log(error);
+      return res.status(200).send('에러가 났습니다.');
+    }
+  },
 }

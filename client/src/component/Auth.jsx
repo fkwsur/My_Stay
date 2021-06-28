@@ -65,13 +65,16 @@ export const Auth = () => {
         }
         alert('로그인에 성공하였습니다.');
         window.sessionStorage.setItem("id", id);
+        window.sessionStorage.setItem("username", res.data.rows.username);
+        window.sessionStorage.setItem("owner", res.data.rows.owner);
         window.sessionStorage.setItem("x_auth", res.data.token);
-        // window.location.href = "/";
+        window.location.href = "/main";
       })
       .catch((err) => {
         console.log(err);
       });
   }
+
 
   return (
     <>
