@@ -63,7 +63,6 @@ module.exports = {
       console.log(error);
       return res.status(200).send('에러가 났습니다.');
     }
-  }
-
+  },
 
 }

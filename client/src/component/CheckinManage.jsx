@@ -5,7 +5,6 @@ export const CheckIn = (e) => {
   const [check, setCheck] = useState([]);
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
-  const [aaa, setAaa] = useState("");
 
 
   useEffect(() => {

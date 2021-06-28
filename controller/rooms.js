@@ -128,7 +128,22 @@ module.exports = {
       }catch(error){
         return res.status(200).send('에러가 났습니다.');
       }
-  }
+  },
+
+  FindRoom: async (req,res) => {
+    try{
+      let {r_idx} = req.body
+      const rows = await rooms.findOne(
+        {
+        where : {r_idx : r_idx}
+        }
+      )
+      if(rows) return res.status(200).json({result : rows});
+      else throw '에러가 났습니다.';
+      }catch(error){
+        return res.status(200).send('에러가 났습니다.');
+      }
+    }
 
   
 

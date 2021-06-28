@@ -85,12 +85,12 @@ module.exports = {
       let decoded = jwt.verifyToken(token);
       console.log(decoded);
       let data = [r_idx];
-      var query = `select * from stayinfo left join rooms 
+      let query = `select * from stayinfo left join rooms 
       on stayinfo.s_idx = rooms.stay_code 
       left join reservation
       on rooms.r_idx = reservation.r_idx 
       where manager_id = :manager_id and reservation.r_idx = :r_idx`;
-      var values = {
+      let values = {
         manager_id : decoded.user_id,
         r_idx: data,
       }
