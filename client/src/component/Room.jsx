@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export const Room = () => {
   const [roomList, setRoomList] = useState([]);
@@ -114,8 +115,8 @@ export const Room = () => {
             <p>{k.room_price}</p>가격
             <img src={k.room_image} alt="대표이미지" />
             <p>{k.room_count}</p>잔여 방 개수
+            <button type="button"><Link to={`/admin/checkIn/${k.r_idx}`}>체크인/체크아웃</Link></button>
             <hr />
-            {/* <button type="button"><Link to={`/admin/${k.s_idx}`}>룸 관리하기</Link></button> */}
           </>
         )
       })}

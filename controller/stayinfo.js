@@ -55,6 +55,17 @@ module.exports = {
     }
   },
 
+  
+  AllStayList: async (req, res) => {
+    try{
+      const rows = await stayinfo.findAll();
+      if(rows) return res.status(200).json({result : rows})
+      else throw console.log('error')
+    }catch(error){
+      console.log(error);
+    }
+  },
+
   UpdateStay: async (req, res) => {
     try{
       let {

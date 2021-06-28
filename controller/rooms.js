@@ -113,6 +113,21 @@ module.exports = {
       console.log(error);
       return res.status(200).send('에러가 났습니다.');
     }
+  },
+
+  AllRoomList: async (req,res) => {
+    try{
+      let {s_idx} = req.body
+      const rows = await rooms.findAll(
+        {
+        where : {stay_code : s_idx}
+        }
+      )
+      if(rows) return res.status(200).json({result : rows});
+      else throw '에러가 났습니다.';
+      }catch(error){
+        return res.status(200).send('에러가 났습니다.');
+      }
   }
 
   
