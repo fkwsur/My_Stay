@@ -7,5 +7,6 @@ router.post('/CreateStay', upload.single('image'),controller.CreateStay);
 router.post('/StayList', controller.StayList);
 router.post('/UpdateStay', controller.UpdateStay);
 router.get('/AllStayList', controller.AllStayList);
+router.post('/FindStay', controller.FindStay);
 
 module.exports = router;

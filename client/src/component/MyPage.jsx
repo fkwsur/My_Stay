@@ -30,8 +30,9 @@ export const MyPage = () => {
 
   return (
     <>
-      마이페이지
-      예약내역
+      <h2>마이페이지</h2>
+      {window.sessionStorage.getItem('id')}님 환영합니다.
+      <h3>예약내역</h3>
       {window.sessionStorage.getItem('id') ?
         <>
           {

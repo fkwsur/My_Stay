@@ -13,9 +13,15 @@ export const Header = () => {
   }
 
   return (
-    <>
+    <div className="header">
       <li>
         <Link to="/main">메인화면</Link>
+      </li>
+      <li>
+        <Link to="/MyPage">마이페이지</Link>
+      </li>
+      <li>
+        <Link to="/admin">관리자페이지</Link>
       </li>
       <li>
         {window.sessionStorage.getItem('id') ?
@@ -24,18 +30,8 @@ export const Header = () => {
           <Link to="/auth">로그인페이지</Link>
         }
       </li>
-      <li>
-        <Link to="/admin">관리자페이지</Link>
-      </li>
-      <li>
-        <Link to="/MyPage">마이페이지</Link>
-      </li>
-      {window.sessionStorage.getItem('id') ?
-        <p>{window.sessionStorage.getItem('id')}님 환영합니다.</p>
-        :
-        ''
-      }
-    </>
+
+    </div>
   )
 }
 
@@ -47,9 +43,6 @@ export const Main = () => {
   }, [])
 
   const List = async (e) => {
-    const url = window.location.pathname;
-    const s_idx = url.split('/')[3];
-    console.log(s_idx);
     await axios
       .get("/api/stayinfo/AllStayList")
       .then((res) => {
@@ -69,28 +62,30 @@ export const Main = () => {
 
   return (
     <>
-      메인화면
-      {stayList.map(k => {
-        return (
-          <>
-            <p>{k.s_idx}</p>
-            <p>이름: {k.stay_manager}</p>
-            <p>숙박이름: {k.stay_name}</p>
-            <img src={k.stay_image} alt="대표이미지" />
-            <p>위치: {k.address}</p>
-            <p>설명: {k.content}</p>
-            <button type="button"><Link to={`/main/${k.s_idx}`}>자세히보기</Link></button>
-            <hr />
-          </>
-        )
-      })}
+      <h2>숙박 시설</h2>
+      <div className="main">
+        {stayList.map(k => {
+          return (
+            <div className="menu">
+              <img src={k.stay_image} alt="대표이미지" />
+              <div className="content">
+                <h3>{k.stay_name}</h3>
+                <p>위치: {k.address}</p>
+                <p>{k.content}</p>
 
+                <button type="button"><Link to={`/main/${k.s_idx}`}>예약하기</Link></button>
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </>
   )
 }
 
 export const DetailRoom = () => {
   const [roomList, setRoomList] = useState([])
+  const [stayName, setStayName] = useState("")
 
   useEffect(() => {
     List()
@@ -118,6 +113,23 @@ export const DetailRoom = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    await axios
+      .post("/api/stayinfo/FindStay", {
+        s_idx: s_idx
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.data.result) {
+          setStayName(res.data.result.stay_name)
+        }
+        else {
+          console.log('에러');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const onClick = () => {
@@ -125,31 +137,32 @@ export const DetailRoom = () => {
     window.location.href = "/auth";
   }
 
+
+
   return (
-    <>
+    <div className="main">
+      <h2>{stayName}</h2>
       {roomList ? roomList.map(k => {
         return (
-          <>
-            <p>{k.r_idx}</p>
-            <p>이름: {k.stay_code}</p>
-            <p>설명: {k.stay_content}</p>
+          <div className="menu">
             <img src={k.room_image} alt="대표이미지" />
-            <p>가격 {k.room_price}</p>
-            <p>잔여방 개수 {k.room_count}</p>
+            <div className="content">
+              <h2>{k.room_name}</h2>
+              <p>{k.content}</p>
+              <p>{k.room_price}원 / 잔여 객실 {k.room_count}</p>
+              {window.sessionStorage.getItem('id') ?
+                <button type="button" >
+                  <Link to={`/main/reserve/${k.r_idx}`}>예약하기</Link>
+                </button>
+                :
+                <button onClick={onClick}>예약하기</button>
+              }
 
-            {window.sessionStorage.getItem('id') ?
-              <button type="button" >
-                <Link to={`/main/reserve/${k.r_idx}`}>예약하기</Link>
-              </button>
-              :
-              <button onClick={onClick}>예약하기</button>
-            }
-            <hr />
-          </>
+            </div>
+          </div>
         )
       }) : "방이 없습니다."}
-
-    </>
+    </div>
   )
 }
 

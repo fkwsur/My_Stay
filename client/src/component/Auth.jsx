@@ -80,7 +80,7 @@ export const Auth = () => {
     <>
       {login === false ?
         <form onSubmit={onSubmit}>
-          회원가입 <br />
+          <h2>회원가입</h2>
           <input name="id" value={id} onChange={onChange} required />아이디 <br />
           <input name="password" value={password} onChange={onChange} required />비밀번호<br />
           <input name="username" value={username} onChange={onChange} required />성함<br />
@@ -109,7 +109,7 @@ export const Auth = () => {
         </form>
         :
         <form onSubmit={onLogin}>
-          로그인 <br />
+          <h2>로그인</h2>
           <input name="id" value={id} onChange={onChange} required />아이디 <br />
           <input name="password" value={password} onChange={onChange} required />비밀번호<br />
           <button type="submit" onClick={() => isLogin(true)}>로그인하기</button>

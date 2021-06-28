@@ -13,6 +13,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
+      <div className="wrap">
       <Switch>
         <Route exact path="/main" component={Main} />
         <Route exact path="/main/:id" component={DetailRoom} />
@@ -23,6 +24,7 @@ const App = () => {
         <Route exact path="/admin/:id" component={Room} />
         <Route exact path="/admin/checkIn/:id" component={CheckIn} />
       </Switch>
+      </div>
     </div>
   );
 }
