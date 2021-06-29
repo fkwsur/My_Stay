@@ -77,15 +77,16 @@ export const Auth = () => {
 
 
   return (
-    <>
+    <div className="auth">
       {login === false ?
         <form onSubmit={onSubmit}>
           <h2>회원가입</h2>
-          <input name="id" value={id} onChange={onChange} required />아이디 <br />
-          <input name="password" value={password} onChange={onChange} required />비밀번호<br />
-          <input name="username" value={username} onChange={onChange} required />성함<br />
-          <input name="email" value={email} onChange={onChange} required />메일<br />
-          <input name="phoneNumber" value={phoneNumber} onChange={onChange} required />휴대폰번호<br />
+          <input name="id" value={id} onChange={onChange} required />&nbsp;아이디 <br />
+          <input name="password" value={password} onChange={onChange} required />&nbsp;비밀번호<br />
+          <input name="username" value={username} onChange={onChange} required />&nbsp;성함<br />
+          <input name="email" value={email} onChange={onChange} required />&nbsp;메일<br />
+          <input name="phoneNumber" value={phoneNumber} onChange={onChange} required />&nbsp;휴대폰번호<br />
+          업장 권장으로 가입하시겠니까?&nbsp;
           <input
             type="radio"
             name="owner"
@@ -93,8 +94,8 @@ export const Auth = () => {
             className="input"
             onChange={onChange}
             required
-          />
-          yes
+          />&nbsp;
+          yes&nbsp;
           <input
             type="radio"
             name="owner"
@@ -102,20 +103,21 @@ export const Auth = () => {
             className="input"
             onChange={onChange}
             required
-          />
-          no
+          />&nbsp;
+          no&nbsp;
+          <br />
           <button type="submit">가입하기</button>
           <button type="button" onClick={() => isLogin(true)}>로그인하기</button>
         </form>
         :
         <form onSubmit={onLogin}>
           <h2>로그인</h2>
-          <input name="id" value={id} onChange={onChange} required />아이디 <br />
-          <input name="password" value={password} onChange={onChange} required />비밀번호<br />
+          <input name="id" value={id} onChange={onChange} required />&nbsp;아이디<br />
+          <input name="password" value={password} onChange={onChange} required />&nbsp;비밀번호<br />
           <button type="submit" onClick={() => isLogin(true)}>로그인하기</button>
           <button type="button" onClick={() => isLogin(false)}>회원가입하기</button>
         </form>
       }
-    </>
+    </div>
   )
 }

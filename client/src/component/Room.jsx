@@ -91,9 +91,12 @@ export const Room = () => {
   }
 
   return (
-    <>
-      방 추가하기
-      <button type="button" onClick={() => setCreateRoom(true)}>숙소생성하기</button><br />
+    <div className="main">
+      <h2 style={{ "marginBottom": "20px" }}>Manage Room</h2>
+      <div style={{ "display": "flex" }}>
+        <p style={{ "marginRight": "20px" }}>Add Room</p>
+        <button type="button" onClick={() => setCreateRoom(true)}>숙소생성하기</button>
+      </div>
       {createRoom === true ?
         <form onSubmit={roomSubmit}>
           <input type="text" name="roomName" value={roomName} onChange={onChange} required />방이름<br />
@@ -105,21 +108,22 @@ export const Room = () => {
         </form>
         : ''}
 
-      룸 관리페이지
+
       {roomList.map(k => {
         return (
-          <>
-            <p>{k.r_idx}</p>
-            <p>{k.room_name}</p>방이름
-            <p>{k.content}</p>설명
-            <p>{k.room_price}</p>가격
+          <div className="menu">
             <img src={k.room_image} alt="대표이미지" />
-            <p>{k.room_count}</p>잔여 방 개수
-            <button type="button"><Link to={`/admin/checkIn/${k.r_idx}`}>체크인/체크아웃</Link></button>
-            <hr />
-          </>
+            <div className="content">
+              <h2>{k.r_idx}.{k.room_name}</h2>
+              <p>{k.content}</p>
+              <p>{k.room_price}원 / 잔여 방 개수 : {k.room_count}</p>
+              <button type="button">
+                <Link to={`/admin/checkIn/${k.r_idx}`}>체크인/체크아웃</Link>
+              </button>
+            </div>
+          </div>
         )
       })}
-    </>
+    </div>
   )
 }

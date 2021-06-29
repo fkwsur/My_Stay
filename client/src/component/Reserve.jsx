@@ -69,16 +69,15 @@ export const Reserve = () => {
     return year + '-' + month + '-' + day;
   }
 
-
   return (
-    <form onSubmit={onSubmit}>
-      예약페이지
-      <p>예약자아이디 :{window.sessionStorage.getItem("id")}</p>
-      <p>예약자명 :{window.sessionStorage.getItem("username")}</p>
-      <p>예약숙소 :{room.room_name}</p>
-      <p>방이름 :{room.room_name}</p>
-      <p>예약일 :<input type="date" min={formatDate()} onChange={onChange} value={date} required /></p>
-      <p>가격 :{room.room_price}</p>
+    <form onSubmit={onSubmit} className="reserve">
+      <h2>예약페이지</h2>
+      <p>예약자아이디 :&nbsp;{window.sessionStorage.getItem("id")}</p>
+      <p>예약자명 :&nbsp;{window.sessionStorage.getItem("username")}</p>
+      <p>예약숙소 :&nbsp;{room.room_name}</p>
+      <p>방이름 :&nbsp;{room.room_name}</p>
+      <p>예약일 :&nbsp;<input type="date" min={formatDate()} onChange={onChange} value={date} required /></p>
+      <p>가격 :&nbsp;{room.room_price}원</p>
       <button type="submit">예약하기</button>
     </form>
   )

@@ -85,41 +85,40 @@ export const Admin = () => {
 
 
   return (
-    <>
+    <div className="main">
       {window.sessionStorage.getItem('owner') === 'yes' ?
         <>
-          숙박관리페이지
+          <h2>숙박관리페이지</h2>
           <button type="button" onClick={() => setCreateStay(true)}>숙소생성하기</button><br />
           {createStay === true ?
             <form onSubmit={staySubmit}>
-              <input type="text" name="stayName" value={stayName} onChange={onChange} required />이름<br />
-              <input type="text" name="stayNumber" value={stayNumber} onChange={onChange} required />번호<br />
-              <input type="text" name="address" value={address} onChange={onChange} required />주소<br />
-              <textarea type="text" name="content" value={content} onChange={onChange} required />설명<br />
-              <input type="file" name="image" file={image} onChange={FileChange} />대표이미지<br />
+              이름.<input type="text" name="stayName" value={stayName} onChange={onChange} required /><br />
+              번호.<input type="text" name="stayNumber" value={stayNumber} onChange={onChange} required /><br />
+              주소.<input type="text" name="address" value={address} onChange={onChange} required /><br />
+              설명.<textarea type="text" name="content" value={content} onChange={onChange} required /><br />
+              대표이미지.<input type="file" name="image" file={image} onChange={FileChange} /><br />
               <button type="submit">생성완료</button>
             </form>
             : ''}
-          숙소리스트
           {stayList.map(k => {
             return (
-              <>
-                <p>{k.s_idx}</p>
-                <p>{k.manager_id}</p>
-                <p>{k.stay_manager}</p>
-                <p>{k.stay_name}</p>
-                <p>{k.stay_number}</p>
+              <div className="menu">
                 <img src={k.stay_image} alt="대표이미지" />
-                <p>{k.address}</p>
-                <p>{k.content}</p>
-                <button type="button"><Link to={`/admin/${k.s_idx}`}>룸 관리하기</Link></button>
-              </>
+                <div className="content">
+                  <h2>{k.stay_name}</h2>
+                  <p>{k.content}</p>
+                  <p>{k.address} / Tell. {k.stay_number}</p>
+                  <button type="button">
+                    <Link to={`/admin/${k.s_idx}`}>룸 관리하기</Link>
+                  </button>
+                </div>
+              </div>
             )
           })}
         </>
         : '관리자권한이 없습니다.'
       }
-    </>
+    </div>
 
   )
 }

@@ -95,11 +95,11 @@ export const CheckIn = (e) => {
   }
 
   return (
-    <>
-      체크인 체크아웃 관리
+    <div className="main">
+      <h2>체크인 / 체크아웃 관리</h2>
       {check.map(k => {
         return (
-          <>
+          <div className="menu_check">
             <ListFormat
               idx={k.idx}
               user_id={k.user_id}
@@ -117,25 +117,23 @@ export const CheckIn = (e) => {
               checkinres={k.checkin}
               checkoutres={k.checkout}
             />
-
-            <hr />
-          </>
+          </div>
         )
       })}
-    </>
+    </div>
   )
 }
 
 export const ListFormat = (props) => {
   return (
     <>
-      <p>{props.idx}</p>
-      <p>{props.user_id}예약자아이디</p>
-      <p>{props.reserved}예약여부</p>
-      <p>{props.reserved_day}예약일</p>
-      <p>{props.RemainingRooms}남은방개수</p>
+      <p>{props.idx}.</p>
+      <p>예약자아이디: {props.user_id}</p>
+      <p>예약여부: {props.reserved}</p>
+      <p>예약일: {props.reserved_day}</p>
+      <p>남은방개수: {props.RemainingRooms}</p>
 
-      <p>체크인여부
+      <p>체크인여부: &nbsp;&nbsp;&nbsp;
         <CheckInput
           name="checkin"
           onChange={props.onChange}
@@ -145,7 +143,7 @@ export const ListFormat = (props) => {
         <button type="button" onClick={() => props.onCheckIn(props.idx)}>입력</button>
         {props.checkinres}
       </p>
-      <p>체크아웃여부
+      <p>체크아웃여부:
         <CheckInput
           name="checkout"
           onChange={props.onChange}
