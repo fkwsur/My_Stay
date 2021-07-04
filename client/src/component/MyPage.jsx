@@ -7,6 +7,11 @@ const socket = socketio.connect("http://localhost:8080");
 
 export const MyPage = () => {
   const [roomList, setRoomList] = useState([]);
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    socket.emit('roomName', name);
+  })
 
   useEffect(() => {
     List()
@@ -33,17 +38,22 @@ export const MyPage = () => {
   }
 
   const onClick = async (k) => {
-    console.log(k);
+    setName(k.idx);
+    console.log(k.idx);
     console.log(k.manager_id);
     console.log(k.stay_manager);
     console.log(k.stay_name);
     alert('여기다가 넣어서보낼거임')
 
-    //socket.emit('msg', {
-    //  roomname: name,
-    //  name: '현지',
-    //  name2: '현지',
-    //});
+    socket.emit('chatroom', {
+      roomname: `${k.stay_name}와의 대화`,
+      username: window.sessionStorage.getItem('id'),
+      mastername: k.stay_manager,
+      masterid: k.manager_id,
+      c_idx: k.idx
+    });
+
+
 
     //await axios
     //.post("/api/reservation/UserReservationList", {

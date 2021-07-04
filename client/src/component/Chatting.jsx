@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
+import socketio from "socket.io-client";
+
+const socket = socketio.connect("http://localhost:8080");
+
 
 export const Chatting = () => {
   const [talk, setTalk] = useState(false)
+  const [roomList, setRoomList] = useState([]);
+
+  useEffect(() => {
+    socket.on('chatroom', (obj) => {
+      console.log(obj);
+      setRoomList([...roomList, obj]);
+    });
+    console.log(roomList);
+  })
 
   const onRoomClick = () => {
     alert('방이동')
@@ -17,11 +30,18 @@ export const Chatting = () => {
               <p>상담하기</p>
               <button className="room_btn" onClick={() => setTalk(!talk)}>X</button>
             </div>
-            <div className="list_wrap" onClick={onRoomClick}>
-              <div className="chat_list">
-                <img src="" alt="" />
-                <p>이름</p>
-              </div>
+            <div className="list_wrap">
+
+              {roomList ? roomList.map(k => {
+                return (
+                  <div className="chat_list" onClick={onRoomClick}>
+                    <img src="" alt="" />
+                    <p>{k.roomname}</p>
+                  </div>
+                )
+              }) : '안나와'
+              }
+
             </div>
           </div>
           :
@@ -30,13 +50,5 @@ export const Chatting = () => {
           </button>
       }
     </div>
-  )
-}
-
-export const InRoom = () => {
-  return (
-    <>
-      <p>채팅할거에요~</p>
-    </>
   )
 }
