@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
-      chattingRoom: {
+      chatRoomName: {
         type:DataTypes.STRING,
         unique: true,
         allowNull: false,

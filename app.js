@@ -6,10 +6,7 @@ const Router = require('./routes');
 
 
 const db = require('./model')   // mysql 시퀄라이저 모델
-const http = require('http');
-http.createServer(app).listen(8080, () => {
-  console.log('server on');
-});
+
 dotenv.config();
 db.sequelize
 .authenticate()
@@ -34,3 +31,19 @@ app.use('/api/user', Router.userRouter)
 app.use('/api/stayinfo', Router.stayInfoRouter)
 app.use('/api/rooms', Router.RoomsRouter)
 app.use('/api/reservation', Router.ReservationRouter)
+
+
+const http_server = require('http').createServer(app).listen(8080, () => {
+  console.log('server on');
+});
+
+const socket = require('./service/socket');
+
+socket.io.attach(http_server,{
+  cors : {
+    origin : 'http://localhost:3000',
+    methods : ["GET", "POST"]
+  }
+});
+
+socket.Wow();
