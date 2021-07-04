@@ -31,6 +31,7 @@ app.use('/api/user', Router.userRouter)
 app.use('/api/stayinfo', Router.stayInfoRouter)
 app.use('/api/rooms', Router.RoomsRouter)
 app.use('/api/reservation', Router.ReservationRouter)
+app.use('/api/chatting', Router.chattingRouter)
 
 
 const http_server = require('http').createServer(app).listen(8080, () => {

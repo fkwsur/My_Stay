@@ -104,7 +104,7 @@ export const Admin = () => {
               <div className="menu">
                 <img src={k.stay_image} alt="대표이미지" />
                 <div className="content">
-                  <h2>{k.stay_name}</h2>
+                  <h3>{k.stay_name}</h3>
                   <p>{k.content}</p>
                   <p>{k.address} / Tell. {k.stay_number}</p>
                   <button type="button">
