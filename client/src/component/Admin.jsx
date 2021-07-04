@@ -34,7 +34,6 @@ export const Admin = () => {
     List()
   }, [])
 
-
   const onChange = (e) => {
     e.preventDefault();
     const {

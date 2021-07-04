@@ -6,6 +6,7 @@ import { CheckIn } from './component/CheckinManage';
 import { Reserve } from './component/Reserve';
 import { MyPage } from './component/MyPage';
 import { Header } from './component/Main';
+import { Chatting } from './component/Chatting';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 
@@ -13,6 +14,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
+     
       <div className="wrap">
       <Switch>
         <Route exact path="/main" component={Main} />
@@ -24,6 +26,7 @@ const App = () => {
         <Route exact path="/admin/:id" component={Room} />
         <Route exact path="/admin/checkIn/:id" component={CheckIn} />
       </Switch>
+      <Chatting />
       </div>
     </div>
   );

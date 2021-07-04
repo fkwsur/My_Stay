@@ -115,3 +115,72 @@ button:hover {
 .auth button {
   margin: 20px 20px 20px 0;
 }
+
+.chatting {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+}
+
+.chat_btn {
+  width: 70px;
+  height: 70px;
+  border: 1px solid rgb(110, 151, 238);
+  color: rgb(110, 151, 238);
+  border-radius: 50%;
+  line-height: 100px;
+  text-align: center;
+  font: 500 1.5rem/70px 'Noto Sans KR', sans-serif;
+  background-color: rgb(177, 197, 241);
+}
+
+.chat_room {
+  width: 250px;
+  height: 450px;
+  background-color: rgb(177, 197, 241);
+  position: relative;
+  right: -15%;
+}
+
+.chat_header {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(110, 151, 238);
+  height: 30px;
+}
+
+.chat_header p {
+  margin-left: 10px;
+}
+
+.room_btn {
+  width: 25px;
+  height: 100%;
+  background-color: rgb(110, 151, 238);
+  color: #000;
+  width: 50px;
+}
+
+.room_btn:hover {
+  background-color: rgb(177, 197, 241);
+  border-radius: 0;
+}
+
+.list_wrap {
+  height: 420px;
+  overflow-y: auto;
+}
+
+.chat_list {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(110, 151, 238);
+}
+
+.chat_list img {
+  width: 50px;
+  height: 50px;
+  background-color: pink;
+  margin: 0 10px;
+}
