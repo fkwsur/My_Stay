@@ -1,5 +1,5 @@
 const io = require('socket.io')();
-const { chatting_room, roomlist } = require('../model');
+const { chatting,chatting_room, roomlist } = require('../model');
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -18,27 +18,44 @@ module.exports = {
     socket.on('chatroom', async (chat) => {
       try{
         console.log(chat);
-      await io.emit('chatroom',chat);
-      const rows = await roomlist.create({
-        roomname : chat.roomname,
-        users : chat.username
+      const rows = await roomlist.findAll({
+        where : {
+          roomname : chat.roomname,
+          users : chat.username
+         }
       })
-      console.log(rows);
-      const rows2 = await chatting_room.create({
-        c_idx : chat.c_idx,
-        user : chat.username
-      })
-      if(rows2){
-      const rows3 = await chatting_room.create({
-        c_idx : chat.c_idx,
-        user : chat.manager_id
-      })
-      console.log(rows3);
-    }
+      if(rows[0] == null){
+        await io.emit('chatroom',chat);
+        const rows2 = await roomlist.create({
+          roomname : chat.roomname,
+          users : chat.username
+        })
+        if(rows2){
+        const rows3 = await chatting_room.create({
+          c_idx : rows2.idx,
+          user : chat.manager_id
+        })
+       }
+       
+      }else{
+        let listerr = '이미 있는 방입니다.'
+        await io.emit('listerr', listerr);
+      }
+      
       }catch (err) {
         console.log(err);
       }
       });
+
+      socket.on('msg', async (msg) => {
+        try{
+        await io.to(msg.roomName).emit('msg',msg);
+        const rows = await chatting.create({user_id : msg.name, chatting : msg.message, chatRoomName : msg.roomName})
+        console.log(rows);
+        }catch (err) {
+          console.log(err);
+        }
+        });
   
       socket.on('roomName', async (roomName) => {
         try{

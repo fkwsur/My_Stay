@@ -43,17 +43,19 @@ export const MyPage = () => {
     console.log(k.manager_id);
     console.log(k.stay_manager);
     console.log(k.stay_name);
-    alert('여기다가 넣어서보낼거임')
 
     socket.emit('chatroom', {
-      roomname: `${k.stay_name}와의 대화`,
+      roomname: `${k.stay_name}님과 대화`,
       username: window.sessionStorage.getItem('id'),
       mastername: k.stay_manager,
-      masterid: k.manager_id,
-      c_idx: k.idx
+      manager_id: k.manager_id,
     });
 
-
+    socket.on('listerr', (obj) => {
+      console.log(obj);
+      alert('이미 있는 방입니다.');
+      window.location.reload();
+    });
 
     //await axios
     //.post("/api/reservation/UserReservationList", {
