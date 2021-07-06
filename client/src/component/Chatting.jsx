@@ -37,21 +37,22 @@ export const Chatting = () => {
   }, [])
 
   const List = async () => {
-    await axios.post('/api/chatting/RoomList', {
-      id: window.sessionStorage.getItem('id')
-    }).then((res) => {
-      try {
-        setChatList(res.data.result[0])
-      } catch (err) {
+    try {
+      await axios.post('/api/chatting/RoomList', {
+        id: window.sessionStorage.getItem('id')
+      }).then((res) => {
+        try {
+          setChatList(res.data.result[0])
+        } catch (err) {
+          console.log(err);
+        }
+      }).catch((err) => {
         console.log(err);
-      }
-    }).catch((err) => {
-      console.log(err);
-    })
+      })
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
-
-
-
 
   const onRoomClick = (k) => {
     setChatting(true);
@@ -150,17 +151,21 @@ export const ChattingRoom = (props) => {
   }, [])
 
   const CList = async () => {
-    await axios.post("/api/chatting/ChattingList", {
-      roomCode: props.roomCode
-    }).then((res) => {
-      try {
-        setChattingList(res.data.result)
-      } catch (err) {
+    try {
+      await axios.post("/api/chatting/ChattingList", {
+        roomCode: props.roomCode
+      }).then((res) => {
+        try {
+          setChattingList(res.data.result)
+        } catch (err) {
+          console.log(err);
+        }
+      }).catch((err) => {
         console.log(err);
-      }
-    }).catch((err) => {
-      console.log(err);
-    })
+      })
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   return (

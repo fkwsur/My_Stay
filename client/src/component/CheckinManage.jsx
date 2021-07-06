@@ -12,27 +12,31 @@ export const CheckIn = (e) => {
   }, [])
 
   const List = async (e) => {
-    const url = window.location.pathname;
-    const r_idx = url.split('/')[3];
-    console.log(r_idx);
-    await axios
-      .post("/api/reservation/ReservationList", {
-        token: window.sessionStorage.getItem('x_auth'),
-        r_idx: r_idx
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result) {
-          console.log(res.data.result);
-          setCheck(res.data.result);
-        }
-        else {
-          alert("에러발생");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const url = window.location.pathname;
+      const r_idx = url.split('/')[3];
+      console.log(r_idx);
+      await axios
+        .post("/api/reservation/ReservationList", {
+          token: window.sessionStorage.getItem('x_auth'),
+          r_idx: r_idx
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result) {
+            console.log(res.data.result);
+            setCheck(res.data.result);
+          }
+          else {
+            alert("에러발생");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   const onChange = (e) => {
@@ -45,53 +49,61 @@ export const CheckIn = (e) => {
   }
 
   const onCheckIn = async (idx) => {
-    await axios
-      .post("/api/reservation/CheckIn", {
-        token: window.sessionStorage.getItem('x_auth'),
-        idx: idx,
-        CheckInTime: checkin
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result) {
-          console.log(res.data.result);
-          alert("체크인 완료");
-          window.location.reload();
-        }
-        else {
-          alert("에러발생");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      await axios
+        .post("/api/reservation/CheckIn", {
+          token: window.sessionStorage.getItem('x_auth'),
+          idx: idx,
+          CheckInTime: checkin
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result) {
+            console.log(res.data.result);
+            alert("체크인 완료");
+            window.location.reload();
+          }
+          else {
+            alert("에러발생");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   const onCheckOut = async (idx) => {
-    const url = window.location.pathname;
-    const r_idx = url.split('/')[3];
-    console.log(r_idx);
-    await axios
-      .post("/api/reservation/checkOut", {
-        token: window.sessionStorage.getItem('x_auth'),
-        r_idx: r_idx,
-        idx: idx,
-        CheckOutTime: checkout
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result) {
-          console.log(res.data.result);
-          alert(res.data.result);
-          window.location.reload();
-        }
-        else {
-          alert("에러발생");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const url = window.location.pathname;
+      const r_idx = url.split('/')[3];
+      console.log(r_idx);
+      await axios
+        .post("/api/reservation/checkOut", {
+          token: window.sessionStorage.getItem('x_auth'),
+          r_idx: r_idx,
+          idx: idx,
+          CheckOutTime: checkout
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result) {
+            console.log(res.data.result);
+            alert(res.data.result);
+            window.location.reload();
+          }
+          else {
+            alert("에러발생");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   return (

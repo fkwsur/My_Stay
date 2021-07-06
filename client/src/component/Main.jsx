@@ -43,21 +43,25 @@ export const Main = () => {
   }, [])
 
   const List = async (e) => {
-    await axios
-      .get("/api/stayinfo/AllStayList")
-      .then((res) => {
-        console.log(res);
-        if (res.data.result) {
-          console.log(res.data.result);
-          setStayList(res.data.result);
-        }
-        else {
-          alert("에러발생");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      await axios
+        .get("/api/stayinfo/AllStayList")
+        .then((res) => {
+          console.log(res);
+          if (res.data.result) {
+            console.log(res.data.result);
+            setStayList(res.data.result);
+          }
+          else {
+            alert("에러발생");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   return (
@@ -92,44 +96,48 @@ export const DetailRoom = () => {
   }, [])
 
   const List = async () => {
-    const url = window.location.pathname;
-    const s_idx = url.split('/')[2];
-    console.log(s_idx);
-    await axios
-      .post("/api/rooms/AllRoomList", {
-        s_idx: s_idx
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result.length === 0) {
-          alert("방이 없습니다.");
-          window.location.href = "/main";
-        }
-        else if (res.data.result) {
-          console.log(res.data.result);
-          setRoomList(res.data.result);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const url = window.location.pathname;
+      const s_idx = url.split('/')[2];
+      console.log(s_idx);
+      await axios
+        .post("/api/rooms/AllRoomList", {
+          s_idx: s_idx
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result.length === 0) {
+            alert("방이 없습니다.");
+            window.location.href = "/main";
+          }
+          else if (res.data.result) {
+            console.log(res.data.result);
+            setRoomList(res.data.result);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-    await axios
-      .post("/api/stayinfo/FindStay", {
-        s_idx: s_idx
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result) {
-          setStayName(res.data.result.stay_name)
-        }
-        else {
-          console.log('에러');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      await axios
+        .post("/api/stayinfo/FindStay", {
+          s_idx: s_idx
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result) {
+            setStayName(res.data.result.stay_name)
+          }
+          else {
+            console.log('에러');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   const onClick = () => {

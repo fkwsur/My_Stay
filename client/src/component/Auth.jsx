@@ -24,55 +24,63 @@ export const Auth = () => {
   }
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    await axios
-      .post("/api/user/signup", {
-        user_id: id,
-        nickname: username,
-        password: password,
-        email: email,
-        phone_number: phoneNumber,
-        owner: owner
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result !== true) {
-          alert('잘못된 정보를 입력했습니다.');
-          return false;
-        }
-        if (res.data.result === true) {
-          alert("가입이 성공하였습니다.");
-          isLogin(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      e.preventDefault();
+      await axios
+        .post("/api/user/signup", {
+          user_id: id,
+          nickname: username,
+          password: password,
+          email: email,
+          phone_number: phoneNumber,
+          owner: owner
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result !== true) {
+            alert('잘못된 정보를 입력했습니다.');
+            return false;
+          }
+          if (res.data.result === true) {
+            alert("가입이 성공하였습니다.");
+            isLogin(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   const onLogin = async (e) => {
-    e.preventDefault();
-    await axios
-      .post("/api/user/signin", {
-        user_id: id,
-        password: password,
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result) {
-          alert(res.data.result);
-          return false;
-        }
-        alert('로그인에 성공하였습니다.');
-        window.sessionStorage.setItem("id", id);
-        window.sessionStorage.setItem("username", res.data.rows.username);
-        window.sessionStorage.setItem("owner", res.data.rows.owner);
-        window.sessionStorage.setItem("x_auth", res.data.token);
-        window.location.href = "/main";
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      e.preventDefault();
+      await axios
+        .post("/api/user/signin", {
+          user_id: id,
+          password: password,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result) {
+            alert(res.data.result);
+            return false;
+          }
+          alert('로그인에 성공하였습니다.');
+          window.sessionStorage.setItem("id", id);
+          window.sessionStorage.setItem("username", res.data.rows.username);
+          window.sessionStorage.setItem("owner", res.data.rows.owner);
+          window.sessionStorage.setItem("x_auth", res.data.token);
+          window.location.href = "/main";
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
 

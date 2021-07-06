@@ -16,27 +16,31 @@ export const Room = () => {
   }, [])
 
   const List = async (e) => {
-    const url = window.location.pathname;
-    const s_idx = url.split('/')[2];
-    console.log(s_idx);
-    await axios
-      .post("/api/rooms/RoomList", {
-        token: window.sessionStorage.getItem('x_auth'),
-        s_idx: s_idx
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result) {
-          console.log(res.data.result);
-          setRoomList(res.data.result);
-        }
-        else {
-          alert("에러발생");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const url = window.location.pathname;
+      const s_idx = url.split('/')[2];
+      console.log(s_idx);
+      await axios
+        .post("/api/rooms/RoomList", {
+          token: window.sessionStorage.getItem('x_auth'),
+          s_idx: s_idx
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result) {
+            console.log(res.data.result);
+            setRoomList(res.data.result);
+          }
+          else {
+            alert("에러발생");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   const onChange = (e) => {
@@ -59,35 +63,39 @@ export const Room = () => {
   };
 
   const roomSubmit = async (e) => {
-    e.preventDefault();
-    const url = window.location.pathname;
-    const s_idx = url.split('/')[2];
-    console.log(s_idx);
-    const formData = new FormData();
-    formData.append("s_idx", s_idx);
-    formData.append("token", window.sessionStorage.getItem('x_auth'));
-    formData.append("room_name", roomName);
-    formData.append("room_price", roomPrice);
-    formData.append("image", image);
-    formData.append("room_count", roomCount);
-    formData.append("content", content);
-    console.log(formData);
-    await axios
-      .post("/api/rooms/CreateRoom", formData)
-      .then((res) => {
-        console.log(res);
-        if (res.data.result !== true) {
-          alert('잘못된 정보를 입력했습니다.');
-          return false;
-        }
-        if (res.data.result === true) {
-          alert("숙박이 생성되었습니다.");
-          window.location.reload();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      e.preventDefault();
+      const url = window.location.pathname;
+      const s_idx = url.split('/')[2];
+      console.log(s_idx);
+      const formData = new FormData();
+      formData.append("s_idx", s_idx);
+      formData.append("token", window.sessionStorage.getItem('x_auth'));
+      formData.append("room_name", roomName);
+      formData.append("room_price", roomPrice);
+      formData.append("image", image);
+      formData.append("room_count", roomCount);
+      formData.append("content", content);
+      console.log(formData);
+      await axios
+        .post("/api/rooms/CreateRoom", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data.result !== true) {
+            alert('잘못된 정보를 입력했습니다.');
+            return false;
+          }
+          if (res.data.result === true) {
+            alert("숙박이 생성되었습니다.");
+            window.location.reload();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   return (

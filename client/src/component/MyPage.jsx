@@ -18,62 +18,52 @@ export const MyPage = () => {
   }, [])
 
   const List = async () => {
-    await axios
-      .post("/api/reservation/UserReservationList", {
-        token: window.sessionStorage.getItem('x_auth'),
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.result) {
-          console.log(res.data.result);
-          setRoomList(res.data.result);
-        }
-        else {
-          console.log("에러발생");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      await axios
+        .post("/api/reservation/UserReservationList", {
+          token: window.sessionStorage.getItem('x_auth'),
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.result) {
+            console.log(res.data.result);
+            setRoomList(res.data.result);
+          }
+          else {
+            console.log("에러발생");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   const onClick = async (k) => {
-    setName(k.idx);
-    console.log(k.idx);
-    console.log(k.manager_id);
-    console.log(k.stay_manager);
-    console.log(k.stay_name);
+    try {
+      setName(k.idx);
+      console.log(k.idx);
+      console.log(k.manager_id);
+      console.log(k.stay_manager);
+      console.log(k.stay_name);
 
-    socket.emit('chatroom', {
-      roomname: `${k.stay_name}님과 대화`,
-      username: window.sessionStorage.getItem('id'),
-      mastername: k.stay_manager,
-      manager_id: k.manager_id,
-    });
+      socket.emit('chatroom', {
+        roomname: `${k.stay_name}님과 대화`,
+        username: window.sessionStorage.getItem('id'),
+        mastername: k.stay_manager,
+        manager_id: k.manager_id,
+      });
 
-    socket.on('listerr', (obj) => {
-      console.log(obj);
-      alert('이미 있는 방입니다.');
-      window.location.reload();
-    });
-
-    //await axios
-    //.post("/api/reservation/UserReservationList", {
-    //  token: window.sessionStorage.getItem('x_auth'),
-    //})
-    //.then((res) => {
-    //  console.log(res);
-    //  if (res.data.result) {
-    //    console.log(res.data.result);
-    //    setRoomList(res.data.result);
-    //  }
-    //  else {
-    //    console.log("에러발생");
-    //  }
-    //})
-    //.catch((err) => {
-    //  console.log(err);
-    //});
+      socket.on('listerr', (obj) => {
+        console.log(obj);
+        alert('이미 있는 방입니다.');
+        window.location.reload();
+      });
+    } catch (err) {
+      console.log(err); //서버자체 문제가 아니라 함수 자체가 오류일때
+    };
   }
 
   return (
