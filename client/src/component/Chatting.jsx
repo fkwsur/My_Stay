@@ -11,6 +11,9 @@ export const Chatting = () => {
   const [chatList, setChatList] = useState([]);
   const [chatting, setChatting] = useState(false);
   const [roomCode, setRoomCode] = useState('');
+  const [message, setMessage] = useState('');
+  const [messageList, setMessageList] = useState([]);
+
 
   useEffect(() => {
     socket.on('chatroom', (obj) => {
@@ -18,6 +21,10 @@ export const Chatting = () => {
       setRoomList([...roomList, obj]);
     });
     console.log(roomList);
+    socket.emit('roomName', roomCode)
+    socket.on('msg', (obj) => {
+      setMessageList([...messageList, obj]);
+    });
   })
 
 
@@ -41,9 +48,25 @@ export const Chatting = () => {
   }
 
   const onRoomClick = (k) => {
-    alert('방이동')
     setChatting(true);
     setRoomCode(k.c_idx)
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    socket.emit('msg', {
+      name: window.sessionStorage.getItem('id'),
+      roomName: roomCode,
+      message: message
+    });
+    setMessage('');
+  }
+
+  const handleChatting = () => {
+    setChatting(false)
+    setRoomCode('')
+    socket.emit('leave', roomCode);
   }
 
 
@@ -61,8 +84,12 @@ export const Chatting = () => {
             <div className="list_wrap">
               {chatting === true ?
                 <ChattingRoom
-                  setChatting={() => setChatting(false)}
+                  setChatting={handleChatting}
                   roomCode={roomCode}
+                  onSubmit={onSubmit}
+                  message={message}
+                  onChange={e => setMessage(e.target.value)}
+                  messageList={messageList}
                 />
                 : <>
                   {chatList ? chatList.map(k => {
@@ -104,28 +131,6 @@ export const Chatting = () => {
 
 
 export const ChattingRoom = (props) => {
-  const [message, setMessage] = useState('');
-  const [messageList, setMessageList] = useState([]);
-
-  useEffect(() => {
-    socket.emit('roomName', props.roomCode)
-    socket.on('msg', (obj) => {
-      setMessageList([...messageList, obj]);
-    });
-  })
-
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    socket.emit('msg', {
-      name: window.sessionStorage.getItem('id'),
-      roomName: props.roomCode,
-      message: message
-    });
-    setMessage('');
-  }
-
 
 
   return (
@@ -133,12 +138,12 @@ export const ChattingRoom = (props) => {
       <input
         type="text"
         name="message"
-        value={message}
-        onChange={e => setMessage(e.target.value)}
+        value={props.message}
+        onChange={props.onChange}
       />
-      <button type="submit" value="submit" onClick={onSubmit}>버튼이요</button>
+      <button type="submit" value="submit" onClick={props.onSubmit}>버튼이요</button>
       <button onClick={props.setChatting}>뒤로가기</button>
-      {messageList ? messageList.map(k => {
+      {props.messageList ? props.messageList.map(k => {
         return (
           <div className="send">
             <h2>{k.roomName}</h2>

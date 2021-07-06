@@ -65,6 +65,14 @@ module.exports = {
         }
       });
 
+      socket.on('leave', async (leave) => {
+        try{
+          socket.leave(leave);
+        }catch (e) {
+          console.log(e);
+        }
+      });
+
       socket.leave();
       socket.on('disconnect', () => {
         console.log('disconnecting');

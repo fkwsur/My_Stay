@@ -6,8 +6,7 @@ import { CheckIn } from './component/CheckinManage';
 import { Reserve } from './component/Reserve';
 import { MyPage } from './component/MyPage';
 import { Header } from './component/Main';
-import { Chatting } from './component/Chatting';
-import { ChattingRoom } from './component/Chatting';
+import { Chatting } from './component/Chatting'; 
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 
