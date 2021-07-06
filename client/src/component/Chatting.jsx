@@ -15,6 +15,7 @@ export const Chatting = () => {
   const [messageList, setMessageList] = useState([]);
 
 
+
   useEffect(() => {
     socket.on('chatroom', (obj) => {
       console.log(obj);
@@ -25,6 +26,7 @@ export const Chatting = () => {
     socket.on('msg', (obj) => {
       setMessageList([...messageList, obj]);
     });
+
   })
 
 
@@ -47,6 +49,9 @@ export const Chatting = () => {
     })
   }
 
+
+
+
   const onRoomClick = (k) => {
     setChatting(true);
     setRoomCode(k.c_idx)
@@ -67,6 +72,7 @@ export const Chatting = () => {
     setChatting(false)
     setRoomCode('')
     socket.emit('leave', roomCode);
+    setMessageList([]);
   }
 
 
@@ -82,8 +88,9 @@ export const Chatting = () => {
             </div>
 
             <div className="list_wrap">
+
               {chatting === true ?
-                <ChattingRoom
+                < ChattingRoom
                   setChatting={handleChatting}
                   roomCode={roomCode}
                   onSubmit={onSubmit}
@@ -131,18 +138,44 @@ export const Chatting = () => {
 
 
 export const ChattingRoom = (props) => {
+  const [chattingList, setChattingList] = useState([]);
 
+  useEffect(() => {
+    CList()
+  }, [])
+
+  const CList = async () => {
+    await axios.post("/api/chatting/ChattingList", {
+      roomCode: props.roomCode
+    }).then((res) => {
+      try {
+        setChattingList(res.data.result)
+      } catch (err) {
+        console.log(err);
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
   return (
     <>
-      <input
-        type="text"
-        name="message"
-        value={props.message}
-        onChange={props.onChange}
-      />
-      <button type="submit" value="submit" onClick={props.onSubmit}>버튼이요</button>
-      <button onClick={props.setChatting}>뒤로가기</button>
+      {
+        chattingList ? chattingList.map(k => {
+          return (
+            <div className="send">
+              <h2>{k.chatRoomName}</h2>
+              <div>
+                <p>
+                  아이디 : {k.user_id}<br />
+                  내용 : {k.chatting}<br />
+                </p>
+              </div>
+            </div>
+          )
+        }) : '안나와'
+      }
+
       {props.messageList ? props.messageList.map(k => {
         return (
           <div className="send">
@@ -157,6 +190,17 @@ export const ChattingRoom = (props) => {
         )
       }) : '안나와'
       }
+      <form onSubmit={props.onSubmit}>
+        <input
+          type="text"
+          name="message"
+          value={props.message}
+          onChange={props.onChange}
+          required
+        />
+        <button type="submit">버튼이요</button>
+        <button onClick={props.setChatting}>뒤로가기</button>
+      </form>
     </>
   )
 }

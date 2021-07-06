@@ -9,8 +9,8 @@ module.exports = {
       let data = [id, id];
       let query = `select * from roomlist inner join chatting_room 
       on roomlist.idx = chatting_room.c_idx 
-      where users = ?
-      or user = ? `;
+      where roomlist.users = ?
+      or chatting_room.user = ? `;
   
       const rows = await sequelize.query(query, { replacements: data })
       console.log(rows)
@@ -18,5 +18,18 @@ module.exports = {
     }catch(err){
       console.log(err);
     }
+  },
+
+  ChattingList : async (req, res) => {
+    try{
+      let {roomCode} = req.body;
+     const rows = await chatting.findAll({
+       where : {chatRoomName : roomCode}
+     })
+     if(rows) return res.status(200).json({result : rows});
+    }catch(err){
+      console.log(err);
+    }
   }
+
 }
