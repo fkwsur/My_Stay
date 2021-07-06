@@ -147,6 +147,7 @@ button:hover {
   justify-content: space-between;
   background-color: rgb(110, 151, 238);
   height: 30px;
+  position: relative;
 }
 
 .chat_header p {
@@ -166,12 +167,70 @@ button:hover {
   border-radius: 0;
 }
 
+/* 채팅리스트 */
 .list_wrap {
   height: 420px;
   overflow-y: auto;
+}
 
+/* 스크롤바 */
+.list_wrap::-webkit-scrollbar,
+.in_room::-webkit-scrollbar {
+  width: 20px;
+}
 
+.list_wrap::-webkit-scrollbar-track,
+.in_room-webkit-scrollbar-track {
+  background-color: rgb(177, 197, 241);
+}
 
+.list_wrap::-webkit-scrollbar-thumb,
+.in_room::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: rgb(110, 151, 238);
+  border: 5px solid rgb(177, 197, 241);
+  border-radius: 10px;
+}
+
+/* 채팅방 */
+.room_wrap {
+  height: 420px
+}
+
+.back {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-color: rgb(110, 151, 238);
+}
+
+.back h2 {
+  padding-left: 10px;
+  font: 300 1.8rem/30px 'Noto Sans KR', sans-serif;
+  color: #fff;
+}
+
+.back button {
+  width: 50px;
+  border-radius: 0;
+}
+
+.in_room {
+  padding: 0 10px;
+  height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+
+}
+
+.room_wrap form {
+  display: flex;
+}
+
+.socket_send {
+  display: flex;
+  flex-direction: column;
 }
 
 .chat_list {
