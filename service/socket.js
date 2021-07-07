@@ -1,13 +1,17 @@
 const io = require('socket.io')();
-const { chatting,chatting_room, roomlist } = require('../model');
+const redisAdapter = require('socket.io-redis');
+const redis = require('redis');
 const dotenv = require("dotenv");
 dotenv.config();
+const { chatting,chatting_room, roomlist } = require('../model');
 
-const redis = require('redis').createClient('6379','127.0.0.1');
+const redis_client = redis.createClient('6379','127.0.0.1');
 
-redis.on('error', (err) => {
+redis_client.on('error', (err) => {
 	console.log(err);
 });
+
+io.adapter(redisAdapter({ host: '127.0.0.1', port: '6379' }));
 
 
 module.exports = { 

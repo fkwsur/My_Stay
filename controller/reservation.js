@@ -84,17 +84,13 @@ module.exports = {
       let {token, r_idx} = req.body;
       let decoded = jwt.verifyToken(token);
       console.log(decoded);
-      let data = [r_idx];
-      let query = `select * from stayinfo left join rooms 
+      let data = [decoded.user_id, r_idx];
+      let query = `select * from stayinfo inner join rooms 
       on stayinfo.s_idx = rooms.stay_code 
-      left join reservation
+      inner join reservation
       on rooms.r_idx = reservation.r_idx 
-      where manager_id = :manager_id and reservation.r_idx = :r_idx`;
-      let values = {
-        manager_id : decoded.user_id,
-        r_idx: data,
-      }
-      const rows = await sequelize.query(query, { replacements: values })
+      where stayinfo.manager_id = ? and reservation.r_idx = ?`;
+      const rows = await sequelize.query(query, { replacements: data })
       if(rows) return res.status(200).json({result : rows[0]});
     } catch(error){
       console.log(error);
@@ -107,15 +103,13 @@ module.exports = {
       let {token} = req.body;
       let decoded = jwt.verifyToken(token);
       console.log(decoded);
+      let data = [decoded.user_id];
       let query = `select * from stayinfo left join rooms 
       on stayinfo.s_idx = rooms.stay_code 
       left join reservation
       on rooms.r_idx = reservation.r_idx 
-      where user_id = :user_id`;
-      let values = {
-        user_id : decoded.user_id,
-      }
-      const rows = await sequelize.query(query, { replacements: values })
+      where reservation.user_id = ?`;
+      const rows = await sequelize.query(query, { replacements: data })
       if(rows) return res.status(200).json({result : rows[0]});
     } catch(error){
       console.log(error);
