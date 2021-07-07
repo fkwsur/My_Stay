@@ -24,7 +24,7 @@ module.exports = {
           users : chat.username
          }
       })
-      if(rows[0] == null){
+      if(!rows[0]){
         await io.emit('chatroom',chat);
         const rows2 = await roomlist.create({
           roomname : chat.roomname,
@@ -36,7 +36,6 @@ module.exports = {
           user : chat.manager_id
         })
        }
-       
       }else{
         let listerr = '이미 있는 방입니다.'
         await io.emit('listerr', listerr);
@@ -71,12 +70,6 @@ module.exports = {
         }catch (e) {
           console.log(e);
         }
-      });
-
-      socket.leave();
-      socket.on('disconnect', () => {
-        console.log('disconnecting');
-        redis.flushall();
       });
 
   });

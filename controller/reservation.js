@@ -10,8 +10,8 @@ module.exports = {
       
       let decoded = jwt.verifyToken(token);
       const rows = await rooms.findOne({where : {r_idx : r_idx}});
-      const count = rows.room_count -1;
       if(!rows) throw res.status(200).json({result: '방을 찾을 수 없습니다.'});
+      const count = rows.room_count -1;
       if(rows.room_count === 0) throw res.status(200).json({result: '예약이 꽉 찼습니다.'});
       const rows2 = await reservation.create({
         r_idx : rows.r_idx,
