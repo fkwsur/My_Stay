@@ -3,6 +3,8 @@ const app = express();
 const cors = require('cors');
 const dotenv = require('dotenv');
 const Router = require('./routes');
+const compression = require('compression')
+const helmet = require('helmet');
 const rateLimit = require("express-rate-limit"); 
 const limiter = rateLimit({ 
   windowMs: 1*60*1000, 

@@ -18,18 +18,20 @@ export const Chatting = () => {
 
 
   useEffect(() => {
-    socket.on('chatroom', (obj) => {
+    socketList()
+  })
+
+  const socketList = async () => {
+    await socket.on('chatroom', (obj) => {
       console.log(obj);
       setRoomList([...roomList, obj]);
     });
     console.log(roomList);
-    socket.emit('roomName', roomCode)
-    socket.on('msg', (obj) => {
+    await socket.emit('roomName', roomCode)
+    await socket.on('msg', (obj) => {
       setMessageList([...messageList, obj]);
     });
-
-  })
-
+  }
 
 
   useEffect(() => {
@@ -60,10 +62,10 @@ export const Chatting = () => {
     setRoomHeader(k.roomname)
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    socket.emit('msg', {
+    await socket.emit('msg', {
       name: window.sessionStorage.getItem('id'),
       roomName: roomCode,
       message: message
@@ -71,10 +73,10 @@ export const Chatting = () => {
     setMessage('');
   }
 
-  const handleChatting = () => {
+  const handleChatting = async () => {
     setChatting(false)
     setRoomCode('')
-    socket.emit('leave', roomCode);
+    await socket.emit('leave', roomCode);
     setMessageList([]);
   }
 

@@ -10,8 +10,12 @@ export const MyPage = () => {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    socket.emit('roomName', name);
+    sList()
   })
+
+  const sList = async () => {
+    await socket.emit('roomName', name);
+  }
 
   useEffect(() => {
     List()
@@ -49,14 +53,14 @@ export const MyPage = () => {
       console.log(k.stay_manager);
       console.log(k.stay_name);
 
-      socket.emit('chatroom', {
+      await socket.emit('chatroom', {
         roomname: `${k.stay_name}님과 대화`,
         username: window.sessionStorage.getItem('id'),
         mastername: k.stay_manager,
         manager_id: k.manager_id,
       });
 
-      socket.on('listerr', (obj) => {
+      await socket.on('listerr', (obj) => {
         console.log(obj);
         alert('이미 있는 방입니다.');
         window.location.reload();
