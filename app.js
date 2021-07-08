@@ -10,9 +10,23 @@ const limiter = rateLimit({
   windowMs: 1*60*1000, 
   max: 100 
   })
-
+  const multerS3 = require('multer-s3');
+  const aws = require('aws-sdk');
+  aws.config.loadFromPath(__dirname + '/s3.json');
 
 const db = require('./model')   // mysql 시퀄라이저 모델
+const s3 = new aws.S3();
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'hyunjibucket',
+        acl: 'public-read',
+        key: function(req, file, cb){
+                cb(null, Date.now() + '.' + file.originalname.split('.').pop()); // 이름 설정
+        }
+    })
+},'NONE');
+module.exports = upload;
 
 dotenv.config();
 db.sequelize
@@ -45,7 +59,7 @@ app.use('/api/chatting', Router.chattingRouter)
 app.use(limiter);
 
 
-const http_server = require('http').createServer(app).listen(8080, () => {
+const http_server = require('http').createServer(app).listen(PORT || 8081, () => {
   console.log('server on');
 });
 

@@ -13,8 +13,9 @@ const {
   MYSQL_DB_HOST 
 } = process.env;
 
-const sequelize = new Sequelize(MYSQL_DB, MYSQL_DB_USER, MYSQL_DB_PASSWORD,{
-  host : MYSQL_DB_HOST,
+const sequelize = new Sequelize("mystay", "admin", "11111111",{
+  host : "mystay.cxdfptuzappa.ap-northeast-2.rds.amazonaws.com",
+  port : 3306,
   dialect : 'mysql',
   operatorsAliases : 0,
   pool : {
