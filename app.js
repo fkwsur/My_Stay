@@ -6,11 +6,14 @@ const Router = require('./routes');
 const compression = require('compression')
 const helmet = require('helmet');
 const rateLimit = require("express-rate-limit"); 
+const multer = require('multer');
+const { PORT  } = process.env;
 const limiter = rateLimit({ 
   windowMs: 1*60*1000, 
   max: 100 
   })
   const multerS3 = require('multer-s3');
+
   const aws = require('aws-sdk');
   aws.config.loadFromPath(__dirname + '/s3.json');
 
@@ -59,7 +62,9 @@ app.use('/api/chatting', Router.chattingRouter)
 app.use(limiter);
 
 
-const http_server = require('http').createServer(app).listen(PORT || 8081, () => {
+const http_server = require('http')
+.createServer(app)
+.listen(PORT || 8080, () => {
   console.log('server on');
 });
 
