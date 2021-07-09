@@ -68,10 +68,10 @@ const http_server = require('http')
 .listen(PORT || 8080, () => {
   console.log('server on');
 });
-
+/*
 const socket = require('./service/socket');
 
-/*
+
 socket.io.attach(http_server,{
   cors : {
     origin : 'http://localhost:3000',
