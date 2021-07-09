@@ -18,6 +18,7 @@ const limiter = rateLimit({
   aws.config.loadFromPath(__dirname + '/s3.json');
 
 const db = require('./model')   // mysql 시퀄라이저 모델
+const logger = require("morgan");
 const s3 = new aws.S3();
 const upload = multer({
     storage: multerS3({
@@ -52,7 +53,7 @@ app.use(express.urlencoded({ extended: false}))
 app.use('/img', express.static('./uploads'));
 app.use(compression()); //메모리 최적화
 app.use(helmet()); //기본적인 보안세팅
-
+app.use(logger('dev'));
 
 app.use('/api/user', Router.userRouter)
 app.use('/api/stayinfo', Router.stayInfoRouter)
