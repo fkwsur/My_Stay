@@ -71,6 +71,7 @@ const http_server = require('http')
 
 const socket = require('./service/socket');
 
+/*
 socket.io.attach(http_server,{
   cors : {
     origin : 'http://localhost:3000',
@@ -79,3 +80,4 @@ socket.io.attach(http_server,{
 });
 
 socket.Wow();
+*/
